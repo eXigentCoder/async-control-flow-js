@@ -1,0 +1,42 @@
+{
+  "name": "async-control-flow-js",
+  "description": "A compartitive example of how to do async control flow in JavaScript",
+  "version": "1.0.0",
+  "engines": {
+    "node": ">=7.10.0"
+  },
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha",
+    "lint": "node_modules/.bin/eslint \"src/**/*.js\" \"test/**/*.js\" index.js --fix"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/eXigentCoder/async-control-flow-js.git"
+  },
+  "keywords": [
+    "async",
+    "bluebird",
+    "control-flow",
+    "promise",
+    "generator",
+    "await"
+  ],
+  "author": "Ryan Kotzen <potz666@gmail.com> (http://blog.exigentcoder.com)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/eXigentCoder/async-control-flow-js/issues"
+  },
+  "homepage": "https://github.com/eXigentCoder/async-control-flow-js#readme",
+  "devDependencies": {
+    "eslint": "3.19.0",
+    "eslint-plugin-node": "4.2.2",
+    "mocha": "3.4.2"
+  },
+  "dependencies": {
+    "async": "2.4.1",
+    "bluebird": "3.5.0",
+    "json-schema-faker": "0.5.0-rc3",
+    "lodash": "4.17.4"
+  }
+}

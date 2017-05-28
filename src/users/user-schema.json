@@ -1,0 +1,65 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "id": "https://raw.githubusercontent.com/todo",
+    "name": "user",
+    "description": "A user of the system",
+    "type": "object",
+    "identifierName": "idNumber",
+    "properties": {
+        "firstName": {
+            "type": "string",
+            "minLength": 1,
+            "faker": "name.firstName",
+            "pattern": "^[A-z\u00C0-\u00ff '\\-]*$"
+        },
+        "lastName": {
+            "type": "string",
+            "minLength": 1,
+            "faker": "name.lastName",
+            "pattern": "^[A-z\u00C0-\u00ff '\\-]*$"
+        },
+        "contactDetails": {
+            "type": "object",
+            "properties": {
+                "cellNumber": {
+                    "type": "string",
+                    "minLength": 1,
+                    "pattern": "^[\\d +]{0,25}$",
+                    "faker": "phone.phoneNumber"
+                },
+                "email": {
+                    "type": "string",
+                    "minLength": 1,
+                    "format": "email",
+                    "faker": "phone.phoneNumber"
+                }
+            },
+            "additionalProperties": false
+        },
+        "startDate": {
+            "type": "string",
+            "format": "date-time",
+            "minLength": 1,
+            "excludeOnOutput": true
+        },
+        "logins": {
+            "type": "number",
+            "minimum": 0,
+            "faker": {
+                "fake": "{{random.number(20)}}"
+            }
+        },
+        "lastLoginDate": {
+            "type": "string",
+            "format": "date-time"
+        }
+    },
+    "additionalProperties": false,
+    "required": [
+        "firstName",
+        "lastName",
+        "startDate",
+        "logins",
+        "lastLoginDate"
+    ]
+}
