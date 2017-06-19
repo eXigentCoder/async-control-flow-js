@@ -1,0 +1,30 @@
+{
+    "id": "https://raw.githubusercontent.com/todo",
+    "name": "user",
+    "description": "A user of the system",
+    "type": "object",
+    "properties": {
+        "_id": {
+            "type": "string",
+            "minLength": 24,
+            "maxLength": 24,
+            "pattern": "^[a-f\\d]{24}$"
+        },
+        "firstName": {
+            "type": "string",
+            "minLength": 1,
+            "faker": "name.firstName"
+        },
+        "lastName": {
+            "type": "string",
+            "minLength": 1,
+            "faker": "name.lastName"
+        }
+    },
+    "additionalProperties": false,
+    "required": [
+        "_id",
+        "firstName",
+        "lastName"
+    ]
+}

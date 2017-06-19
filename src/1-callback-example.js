@@ -1,3 +1,5 @@
-const functions = require('./functions');
+const fn = require('./functions');
 
-functions.getUsers();
+fn.getUsers(function(err, users) {
+    console.log(users);
+});
