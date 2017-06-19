@@ -15,7 +15,7 @@ function getUsers(options) {
     for (let i = 0; i < options.count; i++) {
         users.push(createFakeUser());
     }
-    process.nextTick(function () {
+    process.nextTick(function() {
         return users;
     });
 }

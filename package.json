@@ -3,12 +3,13 @@
   "description": "A compartitive example of how to do async control flow in JavaScript",
   "version": "1.0.0",
   "engines": {
-    "node": ">=7.10.0"
+    "node": ">=8.1.2"
   },
-  "main": "index.js",
+  "main": "./src/0.async-primer.js",
   "scripts": {
     "test": "mocha",
-    "lint": "node_modules/.bin/eslint \"src/**/*.js\" \"test/**/*.js\" index.js --fix"
+    "lint": "node_modules/.bin/eslint \"src/**/*.js\" \"test/**/*.js\" index.js --fix",
+    "prettier": "prettier --write --tab-width=4 --single-quote=true --print-width=120 \"src/**/*.js\""
   },
   "repository": {
     "type": "git",
@@ -31,7 +32,8 @@
   "devDependencies": {
     "eslint": "3.19.0",
     "eslint-plugin-node": "4.2.2",
-    "mocha": "3.4.2"
+    "mocha": "3.4.2",
+    "prettier": "1.4.4"
   },
   "dependencies": {
     "async": "2.4.1",
