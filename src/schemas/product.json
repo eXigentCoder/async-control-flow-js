@@ -1,0 +1,30 @@
+{
+    "id": "https://raw.githubusercontent.com/todo",
+    "name": "product",
+    "description": "A product that can be bought from a store.",
+    "type": "object",
+    "properties": {
+        "_id": {
+            "type": "string",
+            "minLength": 24,
+            "maxLength": 24,
+            "pattern": "^[a-f\\d]{24}$"
+        },
+        "price": {
+            "type": "number",
+            "minLength": 1,
+            "faker": "commerce.price"
+        },
+        "name": {
+            "type": "string",
+            "minLength": 1,
+            "faker": "commerce.productName"
+        }
+    },
+    "additionalProperties": false,
+    "required": [
+        "_id",
+        "price",
+        "name"
+    ]
+}

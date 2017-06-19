@@ -1,0 +1,24 @@
+{
+    "id": "https://raw.githubusercontent.com/todo",
+    "name": "store",
+    "description": "A store that a user can buy items from",
+    "type": "object",
+    "properties": {
+        "_id": {
+            "type": "string",
+            "minLength": 24,
+            "maxLength": 24,
+            "pattern": "^[a-f\\d]{24}$"
+        },
+        "storeName": {
+            "type": "string",
+            "minLength": 1,
+            "faker": "company.companyName"
+        }
+    },
+    "additionalProperties": false,
+    "required": [
+        "_id",
+        "storeName"
+    ]
+}
