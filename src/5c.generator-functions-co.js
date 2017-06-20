@@ -1,35 +1,37 @@
 'use strict';
-const suspend = require('suspend');
-const logic = require('./business-logic');
+const co = require('co');
+const bluebird = require('bluebird');
+const logic = bluebird.promisifyAll(require('./business-logic'));
 
-const getUserData = suspend(function*(callback) {
-    const users = yield logic.getUsers(suspend.resume());
-    users.forEach(function(user) {
-        logic.getOrdersForUser(user, suspend.fork());
+co(function*() {
+    const results = yield {
+        stores: logic.getStoresAsync(),
+        users: getDataForUsers()
+    };
+    const tasks = [];
+    results.users.forEach(function(user) {
+        tasks.push(logic.sendMailAsync(results.stores, user));
     });
-    const orders = yield suspend.join();
-    const products = yield logic.getProductsForOrders(orders, suspend.resume());
-    callback(null, users);
-});
+    yield tasks;
+})
+    .then(function() {
+        console.log('All done!');
+    })
+    .catch(function(err) {
+        throw err;
+    });
 
-function* doWork() {
-    logic.getStores(suspend.fork());
-    getUserData(suspend.fork());
-    const results = yield suspend.join();
-    const stores = results[0];
-    const users = results[1];
+function* getDataForUsers() {
+    const users = yield logic.getUsersAsync();
+    const tasks = [];
     users.forEach(function(user) {
-        logic.sendMail(stores, user, suspend.fork());
+        tasks.push(getUserData(user));
     });
-    yield suspend.join();
+    yield tasks;
+    return users;
 }
 
-suspend.run(doWork, jobsDone);
-
-function jobsDone(err) {
-    if (err) {
-        throw err;
-    }
-    console.log('All done');
-    process.exit(0);
+function* getUserData(user) {
+    const orders = yield logic.getOrdersForUserAsync(user);
+    const products = yield logic.getProductsForOrdersAsync(orders);
 }

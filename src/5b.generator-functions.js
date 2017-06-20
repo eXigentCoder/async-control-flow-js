@@ -7,6 +7,7 @@ const getUserData = suspend(function*(callback) {
     users.forEach(function(user) {
         logic.getOrdersForUser(user, suspend.fork());
     });
+    //todo bug here this is all orderes for everything
     const orders = yield suspend.join();
     const products = yield logic.getProductsForOrders(orders, suspend.resume());
     callback(null, users);
