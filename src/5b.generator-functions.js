@@ -2,20 +2,24 @@
 const suspend = require('suspend');
 const logic = require('./business-logic');
 
-const getUserData = suspend(function*(callback) {
+const getUserData = suspend(function*(user, callback) {
+    const orders = yield logic.getOrdersForUser(user, suspend.resume());
+    const products = yield logic.getProductsForOrders(orders, suspend.resume());
+    callback();
+});
+
+const getDataForUsers = suspend(function*(callback) {
     const users = yield logic.getUsers(suspend.resume());
     users.forEach(function(user) {
-        logic.getOrdersForUser(user, suspend.fork());
+        getUserData(user, suspend.fork());
     });
-    //todo bug here this is all orderes for everything
-    const orders = yield suspend.join();
-    const products = yield logic.getProductsForOrders(orders, suspend.resume());
+    yield suspend.join();
     callback(null, users);
 });
 
 function* doWork() {
     logic.getStores(suspend.fork());
-    getUserData(suspend.fork());
+    getDataForUsers(suspend.fork());
     const results = yield suspend.join();
     const stores = results[0];
     const users = results[1];
