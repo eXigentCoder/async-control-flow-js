@@ -1,12 +1,23 @@
+'use strict';
 const logic = require('./business-logic');
 const util = require('util');
 const pollInterval = 500;
 // sync function, we want to use
+const state = {};
+console.log('getting stores');
+logic.getStores(function(getStoresErr, stores) {
+    if (getStoresErr) {
+        throw getStoresErr;
+    }
+    state.stores = stores;
+    console.log(`Got ${stores.length} store(s)`);
+});
 console.log('getting users');
 logic.getUsers(function(getUserErr, users) {
     if (getUserErr) {
         throw getUserErr;
     }
+    state.users = users;
     console.log(`\tGot ${users.length} users`);
     let callbackHellCompletedCount = 0;
     users.forEach(function(user) {
@@ -48,7 +59,7 @@ logic.getUsers(function(getUserErr, users) {
         const errors = [];
         let emailResponsesReceived = 0;
         users.forEach(function(user) {
-            logic.sendMail(user, function(sendEmailError) {
+            logic.sendMail(user, state.stores, function(sendEmailError) {
                 emailResponsesReceived++;
                 console.log(`\tEmail sent for ${user.firstName}`);
                 if (sendEmailError) {

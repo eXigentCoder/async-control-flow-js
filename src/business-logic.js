@@ -35,8 +35,9 @@ function getProductsForOrders(order, callback) {
     fakeSomeData({ min: 0, max: 5, schema: productSchema }, callback);
 }
 
-function sendMail(order, callback) {
+function sendMail(user, stores, callback) {
     //send mail logic call would go here
+    console.log(`Sending update to ${user.firstName} with ${user.orders.length} orders`);
     randomlyCallCallback(null, callback);
 }
 
