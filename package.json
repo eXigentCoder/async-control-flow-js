@@ -38,6 +38,7 @@
   "dependencies": {
     "async": "2.4.1",
     "bluebird": "3.5.0",
+    "co": "4.6.0",
     "faker": "4.1.0",
     "json-schema-faker": "0.5.0-rc6",
     "lodash": "4.17.4",
