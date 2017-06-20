@@ -1,6 +1,6 @@
 const logic = require('./business-logic');
 const util = require('util');
-
+const pollInterval = 500;
 // sync function, we want to use
 console.log('getting users');
 logic.getUsers(function(getUserErr, users) {
@@ -10,11 +10,12 @@ logic.getUsers(function(getUserErr, users) {
     console.log(`\tGot ${users.length} users`);
     let callbackHellCompletedCount = 0;
     users.forEach(function(user) {
+        console.log(`\tGetting orders for ${user.firstName}`);
         logic.getOrdersForUser(user, function(getOrderErr, orders) {
             if (getOrderErr) {
                 throw getOrderErr;
             }
-            console.log(`\t\tOrder retrieved for ${user.firstName}`);
+            console.log(`\t\tOrder retrieved for ${user.firstName}, getting products`);
             user.orders = orders;
             logic.getProductsForOrders(orders, function(getProductsErr, products) {
                 if (getProductsErr) {
@@ -37,13 +38,13 @@ logic.getUsers(function(getUserErr, users) {
             return allDataRetrieved();
         }
         // Need to use the event loop to prevent blocking
-        process.nextTick(function() {
+        setTimeout(function() {
             checkIfAllOrdersRetrieved();
-        });
+        }, pollInterval);
     }
 
     function allDataRetrieved() {
-        console.log("all order data retrieved, sending emails.");
+        console.log('all order data retrieved, sending emails.');
         const errors = [];
         let emailResponsesReceived = 0;
         users.forEach(function(user) {
@@ -66,9 +67,9 @@ logic.getUsers(function(getUserErr, users) {
                 process.exit(0);
             }
             // Need to use the event loop to prevent blocking
-            process.nextTick(function() {
+            setTimeout(function() {
                 checkIfAllEmailsRetrieved();
-            });
+            }, pollInterval);
         }
     }
 });

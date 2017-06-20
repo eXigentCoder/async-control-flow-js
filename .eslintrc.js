@@ -22,6 +22,7 @@ module.exports = {
         "semi": ["error", "always"],
         "no-console": ["off"],
         "node/exports-style": ["error", "module.exports"],
-        "strict": ["error", "global"]
+        "strict": ["error", "global"],
+        "no-process-exit": ["off"]
     }
 };

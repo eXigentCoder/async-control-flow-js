@@ -2,6 +2,7 @@
 const _ = require('lodash');
 const jsf = require('json-schema-faker');
 const userSchema = require('./schemas/user.json');
+const storeSchema = require('./schemas/store.json');
 const orderSchema = require('./schemas/order.json');
 const productSchema = require('./schemas/product.json');
 
@@ -12,46 +13,46 @@ jsf.extend('faker', function() {
 
 module.exports = {
     getUsers,
+    getStores,
     getOrdersForUser,
     getProductsForOrders,
     sendMail
 };
 
 function getUsers(callback) {
-    const users = [];
-    for (let i = 0; i < 10; i++) {
-        users.push(jsf(userSchema));
-    }
-    process.nextTick(() => {
-        callback(null, users);
-    });
+    fakeSomeData({ min: 5, max: 10, schema: userSchema }, callback);
+}
+
+function getStores(callback) {
+    fakeSomeData({ min: 1, max: 7, schema: storeSchema }, callback);
 }
 
 function getOrdersForUser(user, callback) {
-    const orderCount = _.random(0, 5);
-    const orders = [];
-    for (let i = 0; i < orderCount; i++) {
-        orders.push(jsf(orderSchema));
-    }
-    process.nextTick(() => {
-        callback(null, orders);
-    });
+    fakeSomeData({ min: 0, max: 5, schema: orderSchema }, callback);
 }
 
 function getProductsForOrders(order, callback) {
-    const productCount = _.random(0, 5);
-    const products = [];
-    for (let i = 0; i < productCount; i++) {
-        products.push(jsf(productSchema));
-    }
-    process.nextTick(() => {
-        callback(null, products);
-    });
+    fakeSomeData({ min: 0, max: 5, schema: productSchema }, callback);
 }
 
 function sendMail(order, callback) {
     //send mail logic call would go here
-    process.nextTick(() => {
-        callback();
-    });
+    randomlyCallCallback(null, callback);
+}
+
+function fakeSomeData({ min, max, schema }, callback) {
+    const count = _.random(min, max);
+    const data = [];
+    for (let i = 0; i < count; i++) {
+        data.push(jsf(schema));
+    }
+
+    randomlyCallCallback(data, callback);
+}
+
+function randomlyCallCallback(data, callback) {
+    let wait = _.random(500, 1500);
+    setTimeout(function() {
+        callback(null, data);
+    }, wait);
 }
