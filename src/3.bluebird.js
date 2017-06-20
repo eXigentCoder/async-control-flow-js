@@ -24,40 +24,26 @@ Promise.all([getAllUserData(), logic.getStoresAsync()])
         throw err;
     });
 
-function parallelComplete(err, results) {
-    if (err) {
-        throw err;
-    }
-    async.each(results.users, async.apply(logic.sendMail, results.stores), function(err) {
-        if (err) {
-            throw err;
-        }
-        process.exit(0);
-    });
-}
-
 function getAllUserData() {
     return new Promise(function(resolve, reject) {
         logic
             .getUsersAsync()
             .then(function(users) {
+                const tasks = [];
                 users.forEach(function(user) {
-                    logic
-                        .getOrdersForUserAsync(user)
-                        .then(function(orders) {
-                            logic
-                                .getProductsForOrdersAsync(orders)
-                                .then(function(products) {
-                                    resolve(users);
-                                })
-                                .catch(function(err) {
-                                    reject(err);
-                                });
-                        })
-                        .catch(function(err) {
-                            reject(err);
-                        });
+                    const task = logic.getOrdersForUserAsync(user);
+                    task.then(function(orders) {
+                        return logic.getProductsForOrdersAsync(orders);
+                    });
+                    tasks.push(task);
                 });
+                Promise.all(tasks)
+                    .then(function() {
+                        resolve(users);
+                    })
+                    .catch(function(err) {
+                        reject(err);
+                    });
             })
             .catch(function(err) {
                 reject(err);

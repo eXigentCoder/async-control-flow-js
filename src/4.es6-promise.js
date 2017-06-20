@@ -40,23 +40,21 @@ function getAllUserData() {
         logic
             .getUsersAsync()
             .then(function(users) {
+                const tasks = [];
                 users.forEach(function(user) {
-                    logic
-                        .getOrdersForUserAsync(user)
-                        .then(function(orders) {
-                            logic
-                                .getProductsForOrdersAsync(orders)
-                                .then(function(products) {
-                                    resolve(users);
-                                })
-                                .catch(function(err) {
-                                    reject(err);
-                                });
-                        })
-                        .catch(function(err) {
-                            reject(err);
-                        });
+                    const task = logic.getOrdersForUserAsync(user);
+                    task.then(function(orders) {
+                        return logic.getProductsForOrdersAsync(orders);
+                    });
+                    tasks.push(task);
                 });
+                Promise.all(tasks)
+                    .then(function() {
+                        resolve(users);
+                    })
+                    .catch(function(err) {
+                        reject(err);
+                    });
             })
             .catch(function(err) {
                 reject(err);

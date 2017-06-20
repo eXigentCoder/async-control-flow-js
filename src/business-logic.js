@@ -46,6 +46,7 @@ function getProductsForOrders(orders, callback) {
 
 function sendMail(stores, user, callback) {
     //send mail logic call would go here
+    //user.orders = user.orders || [];
     console.log(`Sending update to ${user.firstName} with ${user.orders.length} orders. ${stores.length} stores`);
     randomlyCallCallback(null, callback);
 }
