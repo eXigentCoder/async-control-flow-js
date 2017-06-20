@@ -27,7 +27,6 @@ logic.getUsers(function(getUserErr, users) {
                 throw getOrderErr;
             }
             console.log(`\t\tOrder retrieved for ${user.firstName}, getting products`);
-            user.orders = orders;
             logic.getProductsForOrders(orders, function(getProductsErr, products) {
                 if (getProductsErr) {
                     throw getProductsErr;
@@ -59,7 +58,7 @@ logic.getUsers(function(getUserErr, users) {
         const errors = [];
         let emailResponsesReceived = 0;
         users.forEach(function(user) {
-            logic.sendMail(user, state.stores, function(sendEmailError) {
+            logic.sendMail(state.stores, user, function(sendEmailError) {
                 emailResponsesReceived++;
                 console.log(`\tEmail sent for ${user.firstName}`);
                 if (sendEmailError) {

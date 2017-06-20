@@ -28,16 +28,25 @@ function getStores(callback) {
 }
 
 function getOrdersForUser(user, callback) {
-    fakeSomeData({ min: 0, max: 5, schema: orderSchema }, callback);
+    fakeSomeData({ min: 0, max: 5, schema: orderSchema }, getDataComplete);
+
+    function getDataComplete(err, data) {
+        user.orders = data;
+        return callback(err, data);
+    }
 }
 
-function getProductsForOrders(order, callback) {
-    fakeSomeData({ min: 0, max: 5, schema: productSchema }, callback);
+function getProductsForOrders(orders, callback) {
+    fakeSomeData({ min: 0, max: 5, schema: productSchema }, getDataComplete);
+    function getDataComplete(err, data) {
+        orders.products = data;
+        return callback(err, data);
+    }
 }
 
-function sendMail(user, stores, callback) {
+function sendMail(stores, user, callback) {
     //send mail logic call would go here
-    console.log(`Sending update to ${user.firstName} with ${user.orders.length} orders`);
+    console.log(`Sending update to ${user.firstName} with ${user.orders.length} orders. ${stores.length} stores`);
     randomlyCallCallback(null, callback);
 }
 
