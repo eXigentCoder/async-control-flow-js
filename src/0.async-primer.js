@@ -8,13 +8,14 @@ function asyncFunction() {
     setTimeout(function() {
         return 42;
     }, 500);
-    return 'Haven\'t got data yet!';
+    return "Haven't got data yet!";
 }
 
 // works - 42
 console.log('syncFunction :', syncFunction());
 // doesn't work
 console.log('asyncFunction :', asyncFunction());
+
 // Enter callbacks!
 function asyncFunctionWithCallback(callback) {
     process.nextTick(function() {
@@ -26,4 +27,20 @@ function asyncFunctionWithCallback(callback) {
 asyncFunctionWithCallback(function(err, result) {
     // works - undefined, 42 because no err object
     console.log(`asyncFunctionWithCallback : err = ${err} result = ${result}`);
+});
+
+const request = require('request');
+
+request.get('http://www.google.co.za', function() {
+    request.get('http://www.google.co.za', function() {
+        request.get('http://www.google.co.za', function() {
+            request.get('http://www.google.co.za', function() {
+                request.get('http://www.google.co.za', function() {
+                    request.get('http://www.google.co.za', function(error, response, body) {
+                        console.log('oh dear ...');
+                    });
+                });
+            });
+        });
+    });
 });

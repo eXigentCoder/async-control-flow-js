@@ -11,7 +11,7 @@ const getUserData = suspend(function*(user, callback) {
 const getDataForUsers = suspend(function*(callback) {
     const users = yield logic.getUsers(suspend.resume());
     users.forEach(function(user) {
-        getUserData(user, suspend.fork());
+            getUserData(user, suspend.fork());
     });
     yield suspend.join();
     callback(null, users);
